@@ -64,6 +64,17 @@ function App() {
     setFilteredFlights(filtered);
   };
 
+  // Resetting the search functionality
+  const handleClearSearch = () => {
+    setFlights([]);
+    setFilteredFlights([]);
+    setFilters({
+      maxPrice: Infinity,
+      stops: 'all',
+      airlines: [],
+    });
+  };
+
   return (
     <>
       <Analytics />
@@ -113,7 +124,7 @@ function App() {
       <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Search Form */}
         <div className="animate-slide-up">
-          <SearchForm onSearch={handleSearch} isLoading={isLoading} />
+          <SearchForm onSearch={handleSearch} isLoading={isLoading} onClear={handleClearSearch} />
         </div>
 
         {/* Results Section */}

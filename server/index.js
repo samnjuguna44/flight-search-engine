@@ -8,6 +8,7 @@ const app = express();
 // CORS configuration - Update with your actual frontend URL after deployment
 app.use(cors({
   origin: [
+    'http://localhost:5173',
     'https://flight-search-engine-wk6c.vercel.app',
     'https://flight-search-engine-wk6c-d3cgmuwa4-samnjuguna44s-projects.vercel.app'
   ],
@@ -54,16 +55,52 @@ async function getAccessToken() {
   }
 }
 
-// Health check endpoint
+// Health checking endpoint
 app.get('/', (req, res) => {
   res.json({
     status: 'OK',
     message: 'Flight Search API is running',
     endpoints: {
-      flights: '/api/flights'
+      flights: '/api/flights',
+      airports: '/api/airports',
     }
   });
 });
+
+// Airport/City searching endpoint
+app.get('/api/airports', async (req, res) => {
+  const { keyword } = req.query;
+
+  if (!keyword || keyword.length < 2) {
+    return res.json({ data: [] });
+  }
+
+  try {
+    const token = await getAccessToken();
+
+    const response = await axios.get(
+        'https://test.api.amadeus.com/v1/reference-data/locations',
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          params: {
+            keyword: keyword,
+            subType: 'CITY,AIRPORT',
+            'page[limit]': 10
+          },
+        }
+    );
+
+    console.log(`✅ Found ${response.data.data.length} locations for "${keyword}"`);
+    res.json(response.data);
+  } catch (error) {
+    console.error('❌ Airport search error:', error.response?.data || error.message);
+    res.status(500).json({
+      error: 'Failed to search airports',
+      details: error.response?.data || error.message,
+    });
+  }
+});
+
 
 // Searching flights endpoint
 app.get('/api/flights', async (req, res) => {
@@ -102,13 +139,14 @@ app.get('/api/flights', async (req, res) => {
 // For Vercel serverless deployment
 const PORT = process.env.PORT || 3001;
 
-// Only listen if not in Vercel environment
+// Only listening if not in Vercel environment
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
     console.log(`🚀 Backend server running on http://localhost:${PORT}`);
     console.log(
         `🔍 Flight search endpoint: http://localhost:${PORT}/api/flights`
     );
+    console.log(`✈️  Airport search endpoint: http://localhost:${PORT}/api/airports`);
   });
 }
 
