@@ -8,8 +8,8 @@ const app = express();
 // CORS configuration - Update with your actual frontend URL after deployment
 app.use(cors({
   origin: [
-    'http://localhost:5173',
-    'https://flight-search-engine-wk6c.vercel.app/'
+    'https://flight-search-engine-wk6c.vercel.app',
+    'https://flight-search-engine-wk6c-d3cgmuwa4-samnjuguna44s-projects.vercel.app'
   ],
   credentials: true,
   methods: ['GET', 'POST', 'OPTIONS'],
