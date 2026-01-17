@@ -300,7 +300,7 @@ This project is created as part of a technical assessment.
 ## 👤 Author
 
 **Samson Gicheru Njuguna**
-- GitHubsamsongich44@gmail.com
+- GitHub: samsongich44@gmail.com
 - LinkedIn: https://www.linkedin.com/in/samson-njuguna-6152a8164/
 
 ## 🙏 Acknowledgments
