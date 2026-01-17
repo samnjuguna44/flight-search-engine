@@ -35,9 +35,10 @@ A modern, responsive flight search application built with React and powered by t
 
 ## 🚀 Live Demo
 
-**Live Application**: [Your Vercel URL here]
+**Live Application**: https://flight-search-engine-wk6c.vercel.app
 
-**Demo Video**: [Your Loom Video URL here]
+**Backend API**: https://flight-search-engine-wine.vercel.app
+
 
 ## 🛠️ Technology Stack
 
