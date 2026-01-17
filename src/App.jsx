@@ -35,12 +35,12 @@ function App() {
 
         let filtered = [...flights];
 
-        // Filter by price
+        // Filtering by price
         if (newFilters.maxPrice !== Infinity) {
             filtered = filtered.filter(f => parseFloat(f.price.total) <= newFilters.maxPrice);
         }
 
-        // Filter by stops
+        // Filtering by stops
         if (newFilters.stops !== 'all') {
             const maxStops = parseInt(newFilters.stops);
             filtered = filtered.filter(f => {
@@ -49,7 +49,7 @@ function App() {
             });
         }
 
-        // Filter by airlines
+        // Filtering by airlines
         if (newFilters.airlines.length > 0) {
             filtered = filtered.filter(f =>
                 newFilters.airlines.includes(f.itineraries[0].segments[0].carrierCode)
@@ -74,7 +74,7 @@ function App() {
                 </div>
             </div>
 
-            {/* Header */}
+            {/* Header Section*/}
             <header className="relative bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white shadow-2xl">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
                     <div className="flex items-center justify-center gap-4 animate-fade-in">
@@ -95,7 +95,7 @@ function App() {
                 </div>
             </header>
 
-            {/* Main Content */}
+            {/* Main Content Section*/}
             <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Search Form */}
                 <div className="animate-slide-up">
@@ -121,7 +121,7 @@ function App() {
                                 />
                             </div>
 
-                            {/* Flight Results */}
+                            {/* Flight Results Section*/}
                             <div className="lg:col-span-3">
                                 <FlightResults flights={filteredFlights} isLoading={isLoading} />
                             </div>
@@ -130,7 +130,7 @@ function App() {
                 )}
             </main>
 
-            {/* Footer */}
+            {/* Footer Section */}
             <footer className="relative mt-20 bg-gradient-to-r from-gray-800 to-gray-900 text-white py-8">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <p className="text-sm text-gray-400">
