@@ -9,9 +9,7 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://*.vercel.app', // Allowing all Vercel preview deployments
-    // To add actual frontend URL here after deployment:
-    // 'https://your-frontend-name.vercel.app'
+    'https://flight-search-engine-wk6c.vercel.app/'
   ],
   credentials: true,
   methods: ['GET', 'POST', 'OPTIONS'],
