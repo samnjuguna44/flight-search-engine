@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Analytics } from "@vercel/analytics/react"
 import SearchForm from './components/SearchForm';
 import FlightResults from './components/FlightResults';
 import FilterPanel from './components/FilterPanel';
@@ -64,7 +65,9 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <>
+      <Analytics />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       {/* Animated Background Pattern */}
       <div className="fixed inset-0 opacity-10 pointer-events-none">
         <div className="absolute top-20 left-10 animate-float">
@@ -153,6 +156,7 @@ function App() {
         </div>
       </footer>
     </div>
+    </>
   );
 }
 
