@@ -148,7 +148,7 @@ function App() {
       <footer className="relative mt-20 bg-gradient-to-r from-gray-800 to-gray-900 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-sm text-gray-400">
-            © 2026 SkySearch. Powered by Amadeus API.
+            © 2026 SkySearch Flight Engine. Powered by Amadeus API.
           </p>
         </div>
       </footer>
