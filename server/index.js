@@ -4,7 +4,19 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+
+// CORS configuration - Update with your actual frontend URL after deployment
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://*.vercel.app', // Allowing all Vercel preview deployments
+    // To add actual frontend URL here after deployment:
+    // 'https://your-frontend-name.vercel.app'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS'],
+}));
+
 app.use(express.json());
 
 const API_KEY = process.env.AMADEUS_API_KEY;
@@ -23,15 +35,15 @@ async function getAccessToken() {
     console.log('🔑 Requesting new access token...');
 
     const response = await axios.post(
-      'https://test.api.amadeus.com/v1/security/oauth2/token',
-      new URLSearchParams({
-        grant_type: 'client_credentials',
-        client_id: API_KEY,
-        client_secret: API_SECRET,
-      }),
-      {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      }
+        'https://test.api.amadeus.com/v1/security/oauth2/token',
+        new URLSearchParams({
+          grant_type: 'client_credentials',
+          client_id: API_KEY,
+          client_secret: API_SECRET,
+        }),
+        {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        }
     );
 
     accessToken = response.data.access_token;
@@ -44,6 +56,17 @@ async function getAccessToken() {
   }
 }
 
+// Health check endpoint
+app.get('/', (req, res) => {
+  res.json({
+    status: 'OK',
+    message: 'Flight Search API is running',
+    endpoints: {
+      flights: '/api/flights'
+    }
+  });
+});
+
 // Searching flights endpoint
 app.get('/api/flights', async (req, res) => {
   console.log('🔍 Flight search request:', req.query);
@@ -53,23 +76,23 @@ app.get('/api/flights', async (req, res) => {
     console.log('📡 Calling Amadeus Flight Offers API...');
 
     const response = await axios.get(
-      'https://test.api.amadeus.com/v2/shopping/flight-offers',
-      {
-        headers: { Authorization: `Bearer ${token}` },
-        params: req.query,
-      }
+        'https://test.api.amadeus.com/v2/shopping/flight-offers',
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          params: req.query,
+        }
     );
 
     console.log(
-      '✅ Amadeus data received:',
-      response.data.data.length,
-      'flights'
+        '✅ Amadeus data received:',
+        response.data.data.length,
+        'flights'
     );
     res.json(response.data);
   } catch (error) {
     console.error(
-      '❌ Amadeus API Error:',
-      error.response?.data || error.message
+        '❌ Amadeus API Error:',
+        error.response?.data || error.message
     );
     res.status(500).json({
       error: 'Failed to fetch flights',
@@ -78,10 +101,18 @@ app.get('/api/flights', async (req, res) => {
   }
 });
 
+// For Vercel serverless deployment
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`🚀 Backend server running on http://localhost:${PORT}`);
-  console.log(
-    `🔍 Flight search endpoint: http://localhost:${PORT}/api/flights`
-  );
-});
+
+// Only listen if not in Vercel environment
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Backend server running on http://localhost:${PORT}`);
+    console.log(
+        `🔍 Flight search endpoint: http://localhost:${PORT}/api/flights`
+    );
+  });
+}
+
+// Export for Vercel
+module.exports = app;
